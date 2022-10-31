@@ -1,13 +1,7 @@
 {
-  "name": "salesforce-webhooks",
-  "version": "1.1.11",
+  "name": "salesforce-webhooks-kx",
+  "version": "0.0.1",
   "description": "Provides an interface to create webhooks in Salesforce for different SObject events",
-  "keywords": [
-    "salesforce",
-    "webhook",
-    "promise",
-    "async"
-  ],
   "main": "dist",
   "files": [
     "dist"
@@ -28,14 +22,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jverce/salesforce-webhooks.git"
+    "url": "git+https://github.com/jeffpalmeri/salesforce-webhooks-kx.git"
   },
   "author": "jverce",
   "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/jverce/salesforce-webhooks/issues"
-  },
-  "homepage": "https://github.com/jverce/salesforce-webhooks#readme",
+  "homepage": "https://github.com/jeffpalmeri/salesforce-webhooks-kx#readme",
   "devDependencies": {
     "antlr4ts": "^0.5.0-alpha.3",
     "apex-parser": "^2.5.0",

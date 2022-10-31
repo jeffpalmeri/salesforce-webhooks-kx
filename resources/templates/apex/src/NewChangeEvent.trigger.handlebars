@@ -30,6 +30,7 @@ trigger {{triggerName}} on {{sObjectType}} (after insert) {
         final Map<String, object> eventData = new Map<String, object>();
         eventData.put('New', item);
         eventData.put('AssociatedRecords', associatedRecords);
+        eventData.put('businessId', {{businessid}});
 
         final String content = {{webhookCalloutName}}.jsonContent(eventData);
         {{webhookCalloutName}}.callout('{{endpointUrl}}', content);

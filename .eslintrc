@@ -5,16 +5,10 @@
     "node": true,
     "mocha": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:jsonc/recommended-with-jsonc"
-  ],
+  "extends": ["eslint:recommended", "plugin:jsonc/recommended-with-jsonc"],
   "overrides": [
     {
-      "files": [
-        ".eslintrc",
-        "*.json"
-      ],
+      "files": [".eslintrc", "*.json"],
       "parser": "jsonc-eslint-parser"
     }
   ],
@@ -22,10 +16,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": [
-    "jsonc",
-    "putout"
-  ],
+  "plugins": ["jsonc", "putout"],
   "root": true,
   "rules": {
     "arrow-parens": "error",
@@ -36,10 +27,7 @@
         "minItems": 1
       }
     ],
-    "array-element-newline": [
-      "error",
-      "always"
-    ],
+    "array-element-newline": ["error", "always"],
     "camelcase": [
       "error",
       {
@@ -47,23 +35,14 @@
       }
     ],
     "comma-dangle": [
-      "error",
+      // "error",
       "always-multiline"
     ],
     "comma-spacing": "error",
     "eol-last": "error",
-    "function-call-argument-newline": [
-      "error",
-      "consistent"
-    ],
-    "function-paren-newline": [
-      "error",
-      "consistent"
-    ],
-    "indent": [
-      "error",
-      2
-    ],
+    "function-call-argument-newline": ["error", "consistent"],
+    "function-paren-newline": ["error", "consistent"],
+    "indent": ["error", 2],
     "key-spacing": "error",
     "keyword-spacing": "error",
     "max-len": [
@@ -78,10 +57,7 @@
         "ignoreRegExpLiterals": true
       }
     ],
-    "multiline-ternary": [
-      "error",
-      "always"
-    ],
+    "multiline-ternary": ["error", "always"],
     "newline-per-chained-call": "error",
     "no-constant-condition": [
       "error",
@@ -117,10 +93,7 @@
         }
       }
     ],
-    "object-curly-spacing": [
-      "error",
-      "always"
-    ],
+    "object-curly-spacing": ["error", "always"],
     "object-property-newline": [
       "error",
       {
@@ -134,16 +107,10 @@
         "minProperties": 2
       }
     ],
-    "quote-props": [
-      "error",
-      "consistent"
-    ],
+    "quote-props": ["error", "consistent"],
     "quotes": "error",
     "semi": "error",
-    "space-before-blocks": [
-      "error",
-      "always"
-    ],
+    "space-before-blocks": ["error", "always"],
     "space-infix-ops": "error"
   }
 }

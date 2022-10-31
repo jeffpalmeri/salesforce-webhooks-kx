@@ -41,6 +41,7 @@ export const getWebhookTrigger = (
   template,
   webhookCallout,
   templateVars = {},
+  businessid
 ) => {
   const { name: webhookCalloutName } = webhookCallout;
   const triggerName = getRandomName("Trigger");
@@ -48,6 +49,7 @@ export const getWebhookTrigger = (
     ...templateVars,
     triggerName,
     webhookCalloutName,
+    businessid,
   });
   return {
     body,
@@ -59,7 +61,7 @@ export const getWebhookTriggerTest = (
   template,
   webhookCalloutMock,
   sObjectFactory,
-  templateVars = {},
+  templateVars = {}
 ) => {
   const { name: sObjectFactoryName } = sObjectFactory;
   const { name: webhookCalloutMockName } = webhookCalloutMock;

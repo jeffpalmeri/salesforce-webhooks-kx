@@ -87,24 +87,17 @@ export class SalesforceClient {
       associateParentEntity,
       secretToken,
       ...additionalTemplateVars
-    },
+    }
   ) {
-    const {
-      sObjectFactory,
-      webhookCallout,
-      webhookCalloutMock,
-    } = this._getCommonApexComponents(secretToken);
+    const { sObjectFactory, webhookCallout, webhookCalloutMock } =
+      this._getCommonApexComponents(secretToken);
 
-    const webhookTrigger = getWebhookTrigger(
-      triggerTemplate,
-      webhookCallout,
-      {
-        endpointUrl,
-        sObjectType,
-        associateParentEntity,
-        ...additionalTemplateVars,
-      },
-    );
+    const webhookTrigger = getWebhookTrigger(triggerTemplate, webhookCallout, {
+      endpointUrl,
+      sObjectType,
+      associateParentEntity,
+      ...additionalTemplateVars,
+    });
 
     const sObjectUnderTest = associateParentEntity
       ? associateParentEntity
@@ -117,7 +110,7 @@ export class SalesforceClient {
         endpointUrl,
         sObjectType: sObjectUnderTest,
         ...additionalTemplateVars,
-      },
+      }
     );
     const classes = [
       sObjectFactory,
@@ -125,18 +118,18 @@ export class SalesforceClient {
       webhookCalloutMock,
       webhookTriggerTest,
     ];
-    const triggers = [
-      webhookTrigger,
-    ];
+    const triggers = [webhookTrigger];
     return {
       classes,
       triggers,
     };
   }
 
-  _baseHeaders() {
+  _baseHeaders(bearerOrOauth) {
+    // Should be "Bearer" or "Oauth"
     return {
-      "Authorization": `Bearer ${this.authToken}`,
+      // Authorization: `Bearer ${this.authToken}`,
+      Authorization: `OAuth ${this.authToken}`, // 208 force-signup.php
       "Content-Type": "text/xml",
     };
   }
@@ -155,9 +148,7 @@ export class SalesforceClient {
 
   async _createRemoteSiteSetting(opts) {
     const { endpointUrl } = opts;
-    const {
-      body, name,
-    } = getCreateRemoteSiteBody(this.authToken, endpointUrl);
+    const { body, name } = getCreateRemoteSiteBody(this.authToken, endpointUrl);
     const headers = {
       ...this._baseHeaders(),
       SOAPAction: "remoteSiteSetting",
@@ -198,19 +189,13 @@ export class SalesforceClient {
     const apexComponents = await this._getApexComponents(
       triggerTemplate,
       triggerTestTemplate,
-      opts,
+      opts
     );
 
-    const {
-      classes,
-      triggers,
-    } = apexComponents;
+    const { classes, triggers } = apexComponents;
     const classNames = classes.map((c) => c.name);
     const triggerNames = triggers.map((t) => t.name);
-    const {
-      body,
-      headers,
-    } = this._getDeployApexCodeRequest(classes, triggers);
+    const { body, headers } = this._getDeployApexCodeRequest(classes, triggers);
     const requestConfig = {
       headers,
     };
@@ -251,13 +236,10 @@ export class SalesforceClient {
 
   async _createWebhookWorkflow(triggerTemplate, triggerTestTemplate, opts) {
     const { remoteSiteName } = await this._createRemoteSiteSetting(opts);
-    const {
-      classNames,
-      triggerNames,
-    } = await this._deployWebhook(
+    const { classNames, triggerNames } = await this._deployWebhook(
       triggerTemplate,
       triggerTestTemplate,
-      opts,
+      opts
     );
     return {
       remoteSiteName,
@@ -270,7 +252,7 @@ export class SalesforceClient {
     const { body } = getDeleteApexCodeBody(
       this.authToken,
       classNames,
-      triggerNames,
+      triggerNames
     );
     const headers = {
       ...this._baseHeaders(),
@@ -283,11 +265,9 @@ export class SalesforceClient {
   }
 
   async _deleteApexCode(classNames, triggerNames) {
-    const {
-      body, headers,
-    } = this._getDeleteApexCodeRequest(
+    const { body, headers } = this._getDeleteApexCodeRequest(
       classNames,
-      triggerNames,
+      triggerNames
     );
     const requestConfig = {
       headers,
@@ -318,11 +298,8 @@ export class SalesforceClient {
   }
 
   async _deleteRemoteSiteSetting(remoteSiteName) {
-    const {
-      body, headers,
-    } = this._getDeleteRemoteSiteSettingRequest(
-      remoteSiteName,
-    );
+    const { body, headers } =
+      this._getDeleteRemoteSiteSettingRequest(remoteSiteName);
     const requestConfig = {
       headers,
     };
@@ -360,19 +337,16 @@ export class SalesforceClient {
     const allowedSObjectTypes = SalesforceClient.getAllowedSObjects(event);
     if (!skipValidation && !allowedSObjectTypes.includes(sObjectType)) {
       throw new Error(
-        `${sObjectType} is not supported for events of type "${event}".`,
+        `${sObjectType} is not supported for events of type "${event}".`
       );
     }
     if (!Array.isArray(fieldsToCheck)) {
       throw new Error("Parameter 'fieldsToCheck' must be an array of strings.");
     }
-    if (
-      ![
-        "any",
-        "all",
-      ].includes(fieldsToCheckMode)
-    ) {
-      throw new Error("Parameter 'fieldsToCheckMode' must be either 'any' or 'all'.");
+    if (!["any", "all"].includes(fieldsToCheckMode)) {
+      throw new Error(
+        "Parameter 'fieldsToCheckMode' must be either 'any' or 'all'."
+      );
     }
   }
 
@@ -380,19 +354,13 @@ export class SalesforceClient {
     const basicSObjects = require("../resources/data/sobjects-new.json");
     const changeEvents = require("../resources/data/sobjects-new-change-event.json");
     if (verbose) {
-      return [
-        ...basicSObjects,
-        ...changeEvents,
-      ].sort((a, b) => {
+      return [...basicSObjects, ...changeEvents].sort((a, b) => {
         if (a.label < b.label) return -1;
         if (a.label > b.label) return 1;
         return 0;
       });
     }
-    return [
-      ...basicSObjects,
-      ...changeEvents,
-    ].map((i) => i.name).sort();
+    return [...basicSObjects, ...changeEvents].map((i) => i.name).sort();
   }
 
   static _getAllowedSObjectsUpdated(verbose) {
@@ -465,7 +433,7 @@ export class SalesforceClient {
     return this._createWebhookWorkflow(
       triggerTemplate,
       triggerTestTemplate,
-      opts,
+      opts
     );
   }
 
@@ -517,10 +485,7 @@ export class SalesforceClient {
     // for any specific fields. Otherwise, and depending on the provided
     // `fieldsToCheckMode`, we select one of the templates that do check for
     // such fields.
-    const {
-      fieldsToCheck = [],
-      fieldsToCheckMode = "any",
-    } = opts;
+    const { fieldsToCheck = [], fieldsToCheckMode = "any" } = opts;
 
     // This cannot be done in a cleaner, dynamic way because webpack won't be
     // able to resolve and bundle these static files unless the exact path is
@@ -528,10 +493,11 @@ export class SalesforceClient {
     let triggerTemplate;
     let triggerTestTemplate;
     if (fieldsToCheck.length === 0) {
+      // Seems like this will be the case that runs unless "fieldsToCheck" or "fieldsToCheckMode"
+      // are passed into opts.
       triggerTemplate = require("../resources/templates/apex/src/UpdatedSObject.trigger.handlebars");
       triggerTestTemplate = require("../resources/templates/apex/test/UpdatedSObjectTriggerTest.cls.handlebars");
     } else if (fieldsToCheckMode === "all") {
-
       triggerTemplate = require("../resources/templates/apex/src/UpdatedAllOfSObjectFields.trigger.handlebars");
       triggerTestTemplate = require("../resources/templates/apex/test/UpdatedAllOfSObjectFieldsTriggerTest.cls.handlebars");
     } else {
@@ -542,7 +508,7 @@ export class SalesforceClient {
     return this._createWebhookWorkflow(
       triggerTemplate,
       triggerTestTemplate,
-      opts,
+      opts
     );
   }
 
@@ -585,7 +551,7 @@ export class SalesforceClient {
     return this._createWebhookWorkflow(
       triggerTemplate,
       triggerTestTemplate,
-      opts,
+      opts
     );
   }
 
@@ -635,21 +601,21 @@ export class SalesforceClient {
 
   _validateDeleteWebhookOpts(remoteSiteName, classNames, triggerNames) {
     if (!remoteSiteName) {
-      console.warn("Parameter \"remoteSiteName\" is empty.");
+      console.warn('Parameter "remoteSiteName" is empty.');
     }
 
     if (!Array.isArray(classNames)) {
-      throw new Error("Parameter \"classNames\" must be an array of strings.");
+      throw new Error('Parameter "classNames" must be an array of strings.');
     }
     if (classNames.length <= 0) {
-      console.warn("Parameter \"classNames\" is empty.");
+      console.warn('Parameter "classNames" is empty.');
     }
 
     if (!Array.isArray(triggerNames)) {
-      throw new Error("Parameter \"triggerNames\" must be an array of strings.");
+      throw new Error('Parameter "triggerNames" must be an array of strings.');
     }
     if (triggerNames.length <= 0) {
-      console.warn("Parameter \"triggerNames\" is empty.");
+      console.warn('Parameter "triggerNames" is empty.');
     }
   }
 
@@ -663,16 +629,12 @@ export class SalesforceClient {
    * @param {string[]} opts.triggerNames the names of the webhook triggers
    */
   async deleteWebhook(opts) {
-    const {
-      remoteSiteName,
-      classNames,
-      triggerNames,
-    } = opts;
+    const { remoteSiteName, classNames, triggerNames } = opts;
     this._validateDeleteWebhookOpts(remoteSiteName, classNames, triggerNames);
     return this._deleteWebhookWorkflow(
       remoteSiteName,
       classNames,
-      triggerNames,
+      triggerNames
     );
   }
 }
