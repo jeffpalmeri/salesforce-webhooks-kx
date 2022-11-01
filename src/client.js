@@ -465,6 +465,10 @@ export class SalesforceClient {
    * `deleteWebhook`.
    */
   async createWebhookUpdated(opts) {
+    console.log("****************************");
+    console.log("MAKING WEBHOOK");
+    console.log("Webhook URL: ", opts);
+    console.log("****************************");
     this._validateCreateWebhookOpts({
       ...opts,
       event: "updated",
