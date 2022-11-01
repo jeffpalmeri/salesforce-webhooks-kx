@@ -1,6 +1,6 @@
 {
   "name": "salesforce-webhooks-kx",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Provides an interface to create webhooks in Salesforce for different SObject events",
   "main": "dist",
   "files": [
