@@ -33,6 +33,7 @@ trigger {{triggerName}} on {{sObjectType}} (after insert) {
         eventData.put('businessId', {{businessid}});
 
         final String content = {{webhookCalloutName}}.jsonContent(eventData);
+        System.debug('JEFF DEBUGGING 2');
         {{webhookCalloutName}}.callout('{{endpointUrl}}', content);
     }
 }

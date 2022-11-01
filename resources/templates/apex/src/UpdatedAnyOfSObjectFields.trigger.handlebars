@@ -43,6 +43,7 @@ trigger {{triggerName}} on {{sObjectType}} (after update) {
         eventData.put('Old', oldItem);
 
         final String content = {{webhookCalloutName}}.jsonContent(eventData);
+        System.debug('JEFF DEBUGGING 5');
         {{webhookCalloutName}}.callout('{{endpointUrl}}', content);
     }
 }

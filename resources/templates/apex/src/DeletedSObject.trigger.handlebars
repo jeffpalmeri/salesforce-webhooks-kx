@@ -24,6 +24,7 @@ trigger {{triggerName}} on {{sObjectType}} (before delete) {
         eventData.put('Old', itemFull);
 
         final String content = {{webhookCalloutName}}.jsonContent(eventData);
+        System.debug('JEFF DEBUGGING 6');
         {{webhookCalloutName}}.callout('{{endpointUrl}}', content);
     }
 }

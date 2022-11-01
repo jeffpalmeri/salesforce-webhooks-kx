@@ -24,6 +24,7 @@ trigger {{triggerName}} on {{sObjectType}} (after insert) {
         eventData.put('New', itemFull);
 
         final String content = {{webhookCalloutName}}.jsonContent(eventData);
+        System.debug('JEFF DEBUGGING 3');
         {{webhookCalloutName}}.callout('{{endpointUrl}}', content);
     }
 }
