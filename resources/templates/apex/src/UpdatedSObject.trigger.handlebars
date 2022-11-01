@@ -29,6 +29,8 @@ trigger {{triggerName}} on {{sObjectType}} (after update) {
         }
 
         final String content = {{webhookCalloutName}}.jsonContent(eventData);
+        System.debug('JEFF DEBUGGING');
+        System.debug({{endpointUrl}});
         {{webhookCalloutName}}.callout('{{endpointUrl}}', content);
     }
 }
