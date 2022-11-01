@@ -9,7 +9,7 @@ public abstract class {{webhookCalloutName}} {
     @future(callout=true)
     public static void callout(final String url, final String content) {
         final HttpRequest request = new HttpRequest();
-        String encodedContent = EncodingUtil.urlEncode(supplyPayload, 'UTF-8');
+        String encodedContent = EncodingUtil.urlEncode(content, 'UTF-8');
         String finalUrl = url + '&' + encodedContent;
         request.setEndpoint(finalUrl);
         request.setMethod('POST');
