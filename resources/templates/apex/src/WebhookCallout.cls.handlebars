@@ -10,7 +10,9 @@ public abstract class {{webhookCalloutName}} {
     public static void callout(final String url, final String content) {
         final HttpRequest request = new HttpRequest();
         String encodedContent = EncodingUtil.urlEncode(content, 'UTF-8');
-        String finalUrl = url + '&' + encodedContent;
+        String finalUrl = url + '&MessageBody=' + encodedContent;
+        System.debug('Final Url');
+        System.debug(finalUrl);
         request.setEndpoint(finalUrl);
         request.setMethod('POST');
         request.setHeader('Content-Type', 'application/json');
